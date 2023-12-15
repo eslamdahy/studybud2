@@ -1,0 +1,65 @@
+<div class="roomList">
+    <div class="roomList__header">
+      <div>
+        <h2>Study Room</h2>
+        <p>{{room_count}} Rooms available</p>
+      </div>
+      <a class="btn btn--main" href="{% url 'createRoom' %}">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+          <title>add</title>
+          <path
+            d="M16.943 0.943h-1.885v14.115h-14.115v1.885h14.115v14.115h1.885v-14.115h14.115v-1.885h-14.115v-14.115z"
+          ></path>
+        </svg>
+        Create Room
+      </a>
+    </div>
+
+    {% for room in rooms %}
+    <div class="roomListRoom">
+      <div class="roomListRoom__header">
+        <a href="{% url 'user-profile' room.host.username %}" class="roomListRoom__author">
+          <div class="avatar avatar--small">
+            <img src="{{room.host.avatar.url}}" />
+          </div>
+          <span>@{{room.host.username}}</span>
+        </a>
+        <div class="roomListRoom__actions">
+          <span>{{room.created|timesince}} ago</span>
+        </div>
+      </div>
+      <div class="roomListRoom__content">
+        <a href="{% url 'room' room.id %}">{{room.name}}</a>
+      </div>
+      <div class="roomListRoom__meta">
+        <div>
+            <a href="{% url 'room' room.id %}" class="roomListRoom__joined">
+                <span style="font-size: 13px;" class="material-symbols-outlined">
+                    group
+                    </span>
+            {{room.participants.all.count}} Joined
+        </a>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <a href="{% url 'home' %}?q={{room.topic}}"><p class="roomListRoom__topic">{{room.topic}}</p></a>
+           
+            {% if request.user == room.host %}
+            <a href="{% url 'deleteRoom' room.id %}"><p class="roomListRoom__topic">
+                <span style="font-size: 13px;" class="material-symbols-outlined">
+                    delete
+                    </span>
+            </p></a>
+            <a href="{% url 'updateRoom' room.id %}"><p class="roomListRoom__topic">
+                <span style="font-size: 13px;" class="material-symbols-outlined">
+                    edit
+                    </span>
+            </p></a>
+            {% endif %}
+        </div>
+        
+
+      </div>
+    </div>
+    {% endfor %}
+    
+  </div>

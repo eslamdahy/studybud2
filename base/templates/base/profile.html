@@ -1,0 +1,97 @@
+{% extends 'main.html' %}
+
+{% load static %}
+
+{% block content %}
+<main class="profile-page layout layout--3">
+  <div class="container">
+    <!-- Topics Start -->
+    {% include 'base/topics_component.html' %}
+    <!-- Topics End -->
+
+    <!-- Room List Start -->
+    <div class="roomList">
+      <div class="profile">
+        <div class="profile__avatar">
+          <div class="avatar avatar--large active">
+            <img src="{{user.avatar.url}}" />
+          </div>
+        </div>
+        <div class="profile__info">
+          <h3>{{user.name}}</h3>
+          <p>@{{user.username}}</p>
+          {% if request.user == user %}
+          <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Edit Profile</a>
+          {% endif %}
+        </div>
+        <div class="profile__about">
+          <h3>About</h3>
+          <p>
+            {{request.user.bio}}
+          </p>
+        </div>
+      </div>
+
+      <div class="roomList__header">
+        <div>
+          <h2>Study Rooms Hosted by {{request.user.name}}</a>
+          </h2>
+        </div>
+      </div>
+
+      {% for room in rooms %}
+    <div class="roomListRoom">
+      <div class="roomListRoom__header">
+        <a href="{% url 'user-profile' room.host.username %}" class="roomListRoom__author">
+          <div class="avatar avatar--small">
+            <img src="{{room.host.avatar.url}}" />
+          </div>
+          <span>@{{room.host.username}}</span>
+        </a>
+        <div class="roomListRoom__actions">
+          <span>{{room.created|timesince}} ago</span>
+        </div>
+      </div>
+      <div class="roomListRoom__content">
+        <a href="{% url 'room' room.id %}">{{room.name}}</a>
+      </div>
+      <div class="roomListRoom__meta">
+        <div>
+            <a href="{% url 'room' room.id %}" class="roomListRoom__joined">
+                <span style="font-size: 13px;" class="material-symbols-outlined">
+                    group
+                    </span>
+            {{room.participants.all.count}} Joined
+        </a>
+        </div>
+        <div style="display: flex; justify-content: space-between;">
+          <a href="{% url 'home' %}?q={{room.topic}}"><p class="roomListRoom__topic">{{room.topic}}</p></a>
+           
+            {% if request.user == room.host %}
+            <a href="{% url 'deleteRoom' room.id %}"><p class="roomListRoom__topic">
+                <span style="font-size: 13px;" class="material-symbols-outlined">
+                    delete
+                    </span>
+            </p></a>
+            <a href="{% url 'updateRoom' room.id %}"><p class="roomListRoom__topic">
+                <span style="font-size: 13px;" class="material-symbols-outlined">
+                    edit
+                    </span>
+            </p></a>
+            {% endif %}
+        </div>
+        
+
+      </div>
+    </div>
+    {% endfor %}
+    </div>
+    <!-- Room List End -->
+
+    <!-- Activities Start -->
+    {% include 'base/activity_component.html' %}
+    <!-- Activities End -->
+  </div>
+</main>
+
+{% endblock content %}

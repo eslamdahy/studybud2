@@ -1,0 +1,13 @@
+root {
+    --color-main: cadetblue;
+    --color-main-light: #e1f6fb;
+    --color-dark: #eeeeee;
+    --color-dark-medium: whitesmoke;
+    --color-dark-light: #eeeef;
+    --color-light: #2e2e2e;
+    --color-gray: gray;
+    --color-light-gray: #2e2e2e;
+    --color-bg: #2e2e2e2e;
+    --color-success: #5dd693;
+    --color-error: #fc4b0b;
+}
